@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: myvision-guides
+Version: 1.0.0
+Summary: CLI tool for generating assistive technology learning guides
+Author: MyVision Oxfordshire
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Topic :: Education
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Requires-Dist: anthropic>=0.18.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: python-docx>=0.8.11
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: python-dateutil>=2.8.2
+Dynamic: author
+Dynamic: classifier
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

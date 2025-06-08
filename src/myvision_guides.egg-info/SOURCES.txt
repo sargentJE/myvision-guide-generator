@@ -1,0 +1,13 @@
+README.md
+setup.py
+src/myvision_guides/__init__.py
+src/myvision_guides/cli.py
+src/myvision_guides/config.py
+src/myvision_guides/file_manager.py
+src/myvision_guides/guide_generator.py
+src/myvision_guides.egg-info/PKG-INFO
+src/myvision_guides.egg-info/SOURCES.txt
+src/myvision_guides.egg-info/dependency_links.txt
+src/myvision_guides.egg-info/entry_points.txt
+src/myvision_guides.egg-info/requires.txt
+src/myvision_guides.egg-info/top_level.txt
