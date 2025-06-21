@@ -13,7 +13,9 @@ MyVision Guide Generator is a command-line tool that leverages Anthropic Claude 
 ### What It Does
 
 - **🚀 Instant Guide Generation:** Type a topic, get a professional learning guide in 30 seconds
-- **📝 Two Input Methods:** Quick topic-based guides or personalized guides from training session transcripts
+- **� Real-Time Streaming:** Watch guides being generated in real-time with intelligent AI response streaming
+- **🧠 Chain of Thought Display:** See the AI's reasoning process as it develops educational content (enabled by default)
+- **�📝 Two Input Methods:** Quick topic-based guides or personalized guides from training session transcripts
 - **📄 Professional Output:** Word documents with MyVision branding or markdown for technical users
 - **🎯 Accessibility Focus:** Specialized for screen readers, magnification, voice control, and assistive technologies
 - **🔄 Organized Workflow:** Automatically saves guides to organized desktop folders with timestamps
@@ -55,9 +57,12 @@ myvision list
 
 ### 🤖 AI-Powered Content Generation
 - **Expert Knowledge:** Claude AI trained on assistive technology concepts
+- **Real-Time Streaming:** Watch the AI generate content in real-time with intelligent buffering
+- **Chain of Thought Display:** See the AI's pedagogical reasoning process (configurable detail levels)
 - **MyVision Methodology:** Incorporates empathetic, step-by-step teaching approach
 - **Structured Output:** Consistent guide format with learning objectives, prerequisites, instructions, practice activities, troubleshooting, and next steps
 - **Professional Branding:** Automatic MyVision logo and organizational branding in all documents
+- **Robust Error Handling:** Graceful failures with automatic fallback modes and helpful error messages
 
 ### 📋 Multiple Input Methods
 - **Topic-Based Generation:** Create guides from simple topic strings
@@ -255,6 +260,62 @@ Desktop/MyVision_Guides/
 └── Session_Guides/           # Session-based guides (future)
     └── ...
 ```
+
+## ✨ New Features: Real-Time Streaming & Chain of Thought
+
+### Real-Time AI Streaming
+
+Watch your guides being generated in real-time! The AI streams content as it's created, providing:
+
+- **Live progress feedback** - No more waiting for 30+ seconds wondering if anything is happening
+- **Intelligent buffering** - Text appears at natural sentence and paragraph boundaries
+- **Professional presentation** - Smooth, readable output that respects the AI's writing flow
+- **Automatic fallback** - If streaming fails, automatically falls back to traditional generation
+
+### Chain of Thought Display
+
+**Enabled by default**, this feature shows you the AI's pedagogical reasoning process as it creates your guide:
+
+```bash
+# You'll see something like this when generating:
+📝 Generating: VoiceOver basics
+
+# My Thought Process
+
+## Analyzing the Topic and Complexity
+VoiceOver basics is a foundational topic that can feel overwhelming to newcomers...
+
+## Understanding the Target Audience  
+My learners are likely:
+- New to assistive technology or recently diagnosed with vision loss
+- Possibly feeling anxious about technology dependence...
+
+## Pedagogical Decisions
+1. Start with confidence-building: Begin with simple, immediately useful skills
+2. Scaffold complexity: Move from basic navigation to more advanced features...
+
+---
+
+# VoiceOver Basics - Learning Guide
+[Final guide content follows...]
+```
+
+### Configuration Options
+
+Control the streaming behavior through environment variables:
+
+```bash
+# Chain of thought settings (default: enabled with detailed level)
+MYVISION_STREAM_THINKING=true          # Show AI reasoning (true/false)
+MYVISION_THINKING_DETAIL=detailed      # Level: basic/detailed/expert
+
+# Streaming settings
+MYVISION_STREAMING_ENABLED=true        # Enable real-time streaming  
+MYVISION_STREAMING_FALLBACK=true       # Auto-fallback if streaming fails
+MYVISION_STREAMING_DELAY_MS=15         # Delay between chunks (smoother display)
+```
+
+Add these to your `.env` file or export them in your shell.
 
 ## Configuration
 

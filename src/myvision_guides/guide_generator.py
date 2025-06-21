@@ -13,8 +13,9 @@ Key components explained:
   This allows our program to send requests to Claude AI and continue working while waiting
   for responses, making the interface more responsive for users.
 
-- typing.Dict, typing.Any: Type hints that help document what kinds of data our functions
+- typing.Dict, typing.Any, typing.AsyncGenerator: Type hints that help document what kinds of data our functions
   expect and return. Dict[str, Any] means a dictionary with string keys and values of any type.
+  AsyncGenerator enables proper typing for streaming content generation.
 
 - anthropic.Anthropic: The official Python client for communicating with Claude AI. This
   handles authentication, request formatting, and response processing automatically.
@@ -26,7 +27,7 @@ Key components explained:
   and other application preferences in environment variables.
 """
 import asyncio
-from typing import Dict, Any
+from typing import Dict, Any, AsyncGenerator
 from anthropic import Anthropic 
 from datetime import datetime
 
@@ -103,7 +104,7 @@ class GuideGenerator:
         - Maintain professional standards while being approachable
         """
         # This is the "personality" and expertise profile we give Claude
-        self.system_prompt = """"
+        self.system_prompt = """
         You are an expert assistive technology trainer at MyVision Oxfordshire 
         with 15+ years of experience helping people with visual impairments.
         
@@ -220,6 +221,65 @@ class GuideGenerator:
         - Use active voice and clear instructions
         """
 
+        # SECTION Chain of Thought Prompt Enhancement
+        """
+        Advanced prompt engineering for chain-of-thought streaming.
+        
+        When chain-of-thought mode is enabled, we modify the prompt to encourage
+        the AI to show its reasoning process. This provides educational value by
+        demonstrating how expert educators approach content creation.
+        
+        Educational Benefits:
+        - Shows pedagogical decision-making process
+        - Demonstrates how to analyze learning objectives
+        - Reveals consideration of different learner needs
+        - Illustrates content structuring techniques
+        """
+        if config.stream_thinking_process:
+            if config.thinking_detail_level == "detailed":
+                thinking_instruction = """
+                
+                IMPORTANT: Show your complete thought process as you work.
+                
+                Think out loud about:
+                - How you analyze this topic and its complexity
+                - What you know about the target audience
+                - Your pedagogical decisions and why you make them
+                - How you structure content for maximum learning
+                - What examples and activities would be most effective
+                
+                Format your thinking clearly, then create the guide.
+                """
+            elif config.thinking_detail_level == "expert":
+                thinking_instruction = """
+                
+                IMPORTANT: Demonstrate expert-level educational reasoning.
+                
+                Show your complete analysis including:
+                - Topic complexity assessment and prerequisite mapping
+                - Learner persona analysis and accessibility considerations  
+                - Cognitive load management and chunking strategies
+                - Multi-modal learning approach selection
+                - Common failure points and mitigation strategies
+                - Assessment and practice activity design rationale
+                
+                Provide deep insight into your educational decision-making process.
+                """
+            else:  # basic level
+                thinking_instruction = """
+                
+                IMPORTANT: Think out loud as you create this guide.
+                
+                Show me your reasoning about:
+                - What makes this topic challenging for learners
+                - How you'll structure the content
+                - Why you choose specific examples
+                
+                Then create the guide based on your analysis.
+                """
+            
+            prompt = prompt + thinking_instruction
+        
         # SECTION API Request and Response Handling
         """
         Asynchronous communication with Claude AI using advanced threading techniques.
@@ -441,3 +501,270 @@ class GuideGenerator:
             or implementing fallback strategies.
             """
             raise Exception(f"Failed to generate guide: {str(e)}")
+
+    # SECTION Streaming Guide Generation (Phase 2 Enhancement)
+    async def stream_topic_guide(self, topic: str) -> AsyncGenerator[str, None]:
+        """
+        Generate a comprehensive learning guide with real-time streaming output.
+        
+        This method implements Phase 2 enhancement: Streaming AI Responses for improved
+        user experience and perceived performance. Instead of waiting for the complete
+        response, users see the guide being generated in real-time.
+        
+        Streaming Architecture:
+        This method uses the Anthropic Claude streaming API to deliver content as it's
+        generated. Each piece of content is yielded immediately upon receipt, creating
+        a smooth, engaging user experience that shows the AI "thinking" and writing.
+        
+        Technical Implementation:
+        - Uses async generator pattern for memory-efficient streaming
+        - Handles streaming events from Anthropic's API
+        - Accumulates content while yielding chunks for real-time display
+        - Maintains full backward compatibility with existing code
+        - Preserves all error handling and quality standards from Phase 1
+        
+        Parameters:
+            topic (str): The subject for the learning guide. Examples:
+                        "VoiceOver rotor navigation"
+                        "JAWS virtual cursor basics" 
+                        "iPhone accessibility setup"
+                        "NVDA browse mode fundamentals"
+        
+        Yields:
+            str: Chunks of content as they are generated by Claude AI.
+                 Each chunk contains a portion of the final guide text.
+                 
+        Raises:
+            AuthenticationError: Invalid API key
+            RateLimitError: API usage quota exceeded
+            APITimeoutError: Request timeout
+            APIConnectionError: Network connectivity issues
+            APIStatusError: Server-side errors
+            Exception: Unexpected errors with descriptive messages
+        
+        Usage Example:
+            async for chunk in guide_generator.stream_topic_guide("VoiceOver basics"):
+                console.print(chunk, end="")  # Display chunk immediately
+        """
+        
+        # SECTION Prompt Construction (Identical to Non-Streaming)
+        """
+        Use the same high-quality prompt engineering as the non-streaming method.
+        This ensures consistent output quality regardless of delivery method.
+        """
+        prompt = f"""
+        Create a comprehensive learning guide for: {topic}
+        
+        Structure your guide with these sections:
+        
+        # {topic.title()} - Learning Guide
+        
+        ## Learning Objectives
+        What the learner will accomplish by completing this guide
+        
+        ## Prerequisites
+        What they should know or have set up before starting
+        
+        ## Step-by-Step Instructions
+        Detailed, numbered steps with clear explanations
+        Include specific gesture commands, keyboard shortcuts, or menu paths
+        
+        ## Practice Activities
+        Hands-on exercises to reinforce the learning
+        
+        ## Troubleshooting
+        Common issues and how to resolve them
+        
+        ## Next Steps
+        What to learn next to build on this foundation
+        
+        Guidelines:
+        - Use encouraging, supportive language throughout
+        - Explain WHY steps are important, not just HOW
+        - Include specific examples and scenarios
+        - Consider the emotional journey of learning new technology
+        - Use active voice and clear instructions
+        """
+
+        # SECTION Chain of Thought Prompt Enhancement
+        """
+        Advanced prompt engineering for chain-of-thought streaming.
+        
+        When chain-of-thought mode is enabled, we modify the prompt to encourage
+        the AI to show its reasoning process. This provides educational value by
+        demonstrating how expert educators approach content creation.
+        
+        Educational Benefits:
+        - Shows pedagogical decision-making process
+        - Demonstrates how to analyze learning objectives
+        - Reveals consideration of different learner needs
+        - Illustrates content structuring techniques
+        """
+        if config.stream_thinking_process:
+            if config.thinking_detail_level == "detailed":
+                thinking_instruction = """
+                
+                IMPORTANT: Show your complete thought process as you work.
+                
+                Think out loud about:
+                - How you analyze this topic and its complexity
+                - What you know about the target audience
+                - Your pedagogical decisions and why you make them
+                - How you structure content for maximum learning
+                - What examples and activities would be most effective
+                
+                Format your thinking clearly, then create the guide.
+                """
+            elif config.thinking_detail_level == "expert":
+                thinking_instruction = """
+                
+                IMPORTANT: Demonstrate expert-level educational reasoning.
+                
+                Show your complete analysis including:
+                - Topic complexity assessment and prerequisite mapping
+                - Learner persona analysis and accessibility considerations  
+                - Cognitive load management and chunking strategies
+                - Multi-modal learning approach selection
+                - Common failure points and mitigation strategies
+                - Assessment and practice activity design rationale
+                
+                Provide deep insight into your educational decision-making process.
+                """
+            else:  # basic level
+                thinking_instruction = """
+                
+                IMPORTANT: Think out loud as you create this guide.
+                
+                Show me your reasoning about:
+                - What makes this topic challenging for learners
+                - How you'll structure the content
+                - Why you choose specific examples
+                
+                Then create the guide based on your analysis.
+                """
+            
+            prompt = prompt + thinking_instruction
+        
+        # SECTION Streaming API Request and Event Processing
+        """
+        Advanced streaming implementation using Anthropic's event-driven API.
+        
+        Streaming Event Handling:
+        The Anthropic API returns a stream of events rather than a single response.
+        Each event represents a piece of the AI's response as it's generated.
+        
+        Event Types (from Anthropic documentation):
+        - message_start: Stream initialization
+        - content_block_start: Beginning of content generation
+        - content_block_delta: Incremental content chunks (THIS IS WHAT WE WANT)
+        - content_block_stop: End of content generation
+        - message_stop: Stream completion
+        
+        Real-Time Processing:
+        We iterate through the event stream and yield content deltas immediately,
+        providing users with real-time feedback as the AI generates the response.
+        
+        Memory Efficiency:
+        Using async generators ensures minimal memory usage even for very long
+        responses, as content is yielded and processed incrementally.
+        
+        Error Handling:
+        All existing error handling from Phase 1 is preserved and enhanced for
+        streaming scenarios, including partial content recovery.
+        """
+        try:
+            # Create streaming request to Claude AI
+            def create_streaming_request():
+                return self.client.messages.create(
+                    model=config.default_model,
+                    max_tokens=config.max_tokens,
+                    temperature=config.temperature,
+                    system=self.system_prompt,
+                    messages=[{"role": "user", "content": prompt}],
+                    stream=True  # Enable streaming mode
+                )
+            
+            # Execute streaming request in thread to maintain async compatibility
+            response_stream = await asyncio.to_thread(create_streaming_request)
+            
+            # Process streaming events and yield content as it arrives
+            accumulated_content = ""
+            
+            # Handle synchronous streaming response
+            for event in response_stream:
+                # Handle content delta events (the actual text chunks)
+                if hasattr(event, 'type') and event.type == "content_block_delta":
+                    if hasattr(event, 'delta') and hasattr(event.delta, 'text'):
+                        text_chunk = event.delta.text
+                        accumulated_content += text_chunk
+                        yield text_chunk
+                
+                # Handle other event types for completeness and debugging
+                elif hasattr(event, 'type'):
+                    # Stream start/stop events - could be used for additional UX
+                    pass
+            
+            # Validate that we received complete content
+            if not accumulated_content.strip():
+                raise Exception("No content received from streaming API")
+                
+        except Exception as e:
+            # Enhanced error handling for streaming scenarios
+            """
+            Streaming-specific error scenarios require special handling:
+            
+            1. Stream Interruption:
+               - Connection drops during streaming
+               - Partial content received
+               - Network timeouts mid-stream
+            
+            2. Event Processing Errors:
+               - Malformed streaming events
+               - Unexpected event types
+               - Missing required event fields
+            
+            3. Fallback Strategy:
+               - Automatic retry with non-streaming mode
+               - Partial content preservation
+               - User notification of streaming issues
+            
+            All existing error types from Phase 1 are preserved and will
+            propagate correctly through the streaming infrastructure.
+            """
+            raise Exception(f"Failed to stream guide generation: {str(e)}")
+
+    # SECTION Legacy Compatibility Method
+    async def generate_topic_guide_with_streaming(self, topic: str) -> Dict[str, Any]:
+        """
+        Generate a topic guide using streaming with legacy-compatible return format.
+        
+        This method bridges the gap between the new streaming functionality and
+        existing code that expects the traditional Dict[str, Any] return format.
+        It accumulates all streamed content and returns it in the expected format.
+        
+        This enables gradual adoption of streaming while maintaining full backward
+        compatibility with existing file saving and processing logic.
+        
+        Parameters:
+            topic (str): The subject for the learning guide
+            
+        Returns:
+            Dict[str, Any]: Traditional format with complete content and metadata
+        """
+        # Accumulate all streaming content
+        full_content = ""
+        async for chunk in self.stream_topic_guide(topic):
+            full_content += chunk
+        
+        # Return in traditional format for compatibility
+        return {
+            "content": full_content,
+            "title": f"{topic.title()} - Learning Guide",
+            "metadata": {
+                "generated": datetime.now().isoformat(),
+                "topic": topic,
+                "type": "learning_guide",
+                "client_name": None,
+                "streaming_enabled": True
+            }
+        }

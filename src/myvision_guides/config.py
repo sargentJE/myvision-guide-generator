@@ -129,6 +129,61 @@ class Config:
         self.max_tokens = 3000
         self.temperature = 0.2
 
+        # SECTION Streaming Configuration (Phase 2 Enhancement)
+        """
+        Real-Time Streaming Settings for Enhanced User Experience
+        
+        These settings control the new streaming functionality that displays
+        AI-generated content in real-time as it's being created, dramatically
+        improving perceived performance and user engagement.
+        
+        streaming_enabled: Enable/disable real-time streaming
+        - true: Content appears in real-time as AI generates it (recommended)
+        - false: Traditional wait-for-complete-response behavior
+        - Can be overridden per-command for specific use cases
+        
+        streaming_fallback_enabled: Automatic fallback to non-streaming
+        - true: If streaming fails, automatically retry with traditional method
+        - false: Streaming failures result in error (for debugging)
+        - Recommended: true for production use
+        
+        streaming_chunk_display_delay: Delay between text chunks (milliseconds)
+        - 0: Display chunks immediately as received (fastest)
+        - 10-50: Slight delay for smoother visual effect
+        - 100+: Slower, more deliberate typing effect
+        - Recommended: 10-20ms for professional appearance
+        
+        streaming_error_retry: Retry streaming on transient errors
+        - true: Retry streaming if initial attempt fails
+        - false: Immediate fallback to non-streaming
+        - Helps handle temporary network issues
+        """
+        self.streaming_enabled = os.getenv("MYVISION_STREAMING_ENABLED", "true").lower() == "true"
+        self.streaming_fallback_enabled = os.getenv("MYVISION_STREAMING_FALLBACK", "true").lower() == "true"
+        self.streaming_chunk_display_delay = int(os.getenv("MYVISION_STREAMING_DELAY_MS", "15"))
+        self.streaming_error_retry = os.getenv("MYVISION_STREAMING_RETRY", "true").lower() == "true"
+
+        # SECTION Chain of Thought Configuration (Advanced Feature)
+        """
+        Chain of Thought Streaming Settings
+        
+        These settings control whether the AI shows its reasoning process while
+        generating content, providing educational insight into how AI approaches
+        learning guide creation.
+        
+        stream_thinking_process: Show AI reasoning during generation
+        - true: AI explains its thought process before/during guide creation
+        - false: Traditional direct guide generation (default)
+        - Educational value: Users see how expert educators think through content creation
+        
+        thinking_detail_level: How much reasoning detail to show
+        - "basic": High-level decisions and structure
+        - "detailed": Step-by-step reasoning and pedagogical choices  
+        - "expert": Full thought process including edge cases and alternatives
+        """
+        self.stream_thinking_process = os.getenv("MYVISION_STREAM_THINKING", "true").lower() == "true"
+        self.thinking_detail_level = os.getenv("MYVISION_THINKING_DETAIL", "detailed")
+
         # SECTION File Path Configuration
         """
         File System Path Management
