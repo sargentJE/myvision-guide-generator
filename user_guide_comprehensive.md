@@ -35,14 +35,104 @@ source venv/bin/activate
 ```bash
 myvision guide "VoiceOver basics for beginners"
 ```
-*Wait 30 seconds and you'll have a professional Word document on your desktop!*
+*Watch as the AI streams its thinking process in real-time, then generates your professional guide!*
 
 ### What Just Happened?
 
-1. ✅ **AI Analysis:** Claude AI analyzed your topic and applied MyVision's teaching methodology
-2. ✅ **Expert Content:** Generated comprehensive learning guide with proper educational structure
-3. ✅ **Professional Formatting:** Created Word document with MyVision branding and logo
-4. ✅ **Organized Storage:** Saved to `Desktop/MyVision_Guides/Learning_Guides/` with timestamp
+1. ✅ **Real-Time AI Streaming:** Watch as Claude AI thinks through your topic step-by-step
+2. ✅ **Chain-of-Thought Processing:** See the AI's reasoning process as it plans your guide
+3. ✅ **Expert Content:** Generated comprehensive learning guide with proper educational structure
+4. ✅ **Professional Formatting:** Created Word document with MyVision branding and logo
+5. ✅ **Organized Storage:** Saved to `Desktop/MyVision_Guides/Learning_Guides/` with timestamp
+
+### The Real-Time Experience
+
+When you run a guide generation command, you'll see:
+
+```
+🤖 AI is analyzing your topic...
+
+💭 Chain of Thought Streaming:
+Let me think about creating a comprehensive VoiceOver guide for beginners...
+
+First, I need to consider the user's current knowledge level...
+The key concepts they need to understand are...
+I should structure this with clear learning objectives...
+
+✨ Now generating your professional guide...
+
+📝 Creating: voiceover_basics_for_beginners_learning_guide_20241215_143022.docx
+✅ Guide successfully created and saved to Desktop/MyVision_Guides/Learning_Guides/
+```
+
+## Real-Time AI Streaming Features
+
+### Understanding Chain-of-Thought Processing
+
+MyVision Guide Generator uses advanced chain-of-thought streaming, which means you can watch the AI think through your request step-by-step in real-time. This creates a more engaging experience and helps you understand how the AI approaches guide creation.
+
+### What You'll See During Generation
+
+**1. Initial Analysis Phase:**
+```
+🤖 AI is analyzing your topic...
+
+💭 Chain of Thought Streaming:
+Let me think about creating a guide for "VoiceOver basics for beginners"...
+
+I need to consider:
+- The user's current knowledge level (complete beginner)
+- Essential concepts they must understand first
+- Logical progression from simple to complex
+- Practical exercises to reinforce learning
+```
+
+**2. Planning Phase:**
+```
+For this guide, I should structure it as:
+1. What is VoiceOver and why it matters
+2. Basic gestures and navigation
+3. Essential settings and customization
+4. Practice activities
+5. Troubleshooting common issues
+
+Now let me create comprehensive content for each section...
+```
+
+**3. Generation Phase:**
+```
+✨ Now generating your professional guide...
+
+📝 Creating: voiceover_basics_for_beginners_learning_guide_20241215_143022.docx
+✅ Guide successfully created and saved to Desktop/MyVision_Guides/Learning_Guides/
+```
+
+### Streaming Configuration
+
+By default, chain-of-thought streaming is enabled for the best user experience. You can customize this behavior:
+
+**Environment Configuration (.env file):**
+```bash
+# Enable/disable streaming
+STREAMING_ENABLED=true
+
+# Enable/disable chain-of-thought
+CHAIN_OF_THOUGHT_ENABLED=true
+
+# Detail level: minimal, moderate, detailed
+CHAIN_OF_THOUGHT_DETAIL_LEVEL=detailed
+```
+
+**Benefits of Streaming:**
+- ✅ **Transparency:** See exactly how the AI approaches your topic
+- ✅ **Engagement:** Stay engaged during the 30-60 second generation process
+- ✅ **Learning:** Understand the AI's reasoning for better prompt creation
+- ✅ **Trust:** Build confidence in the AI's systematic approach
+
+**When Streaming Helps Most:**
+- **Complex Topics:** See how the AI breaks down complicated subjects
+- **New Users:** Understand what the AI considers when creating guides
+- **Quality Assurance:** Verify the AI is thinking about your specific requirements
 
 ## Basic Usage
 
